@@ -6,8 +6,9 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^$', 'moduleviewer.views.index', name='index'),
-    url(r'^content/(?P<id>m\d+)', 'moduleviewer.views.module'),
-
+    url(r'^content/(?P<id>m\d+)/?$', 'moduleviewer.views.module'),
+    url(r'^content/(?P<id>m\d+)@(?P<version>[\d.]+)',
+        'moduleviewer.views.module'),
     # Examples:
     # url(r'^$', 'webview.views.home', name='home'),
     # url(r'^webview/', include('webview.foo.urls')),

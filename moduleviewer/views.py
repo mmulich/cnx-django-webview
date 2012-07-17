@@ -15,9 +15,9 @@ def index(request):
                               {'title': SITE_TITLE})
 
 
-def module(request, id):
+def module(request, id, version='latest'):
     module_id = id
-    module_version = 'latest'
+    module_version = version
     if '@' in module_id:
         module_id, module_version = module_id.split('@')
 
