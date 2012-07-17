@@ -1,0 +1,7 @@
+# Development #
+###############
+*.pyc
+*.pyo
+*~
+*.egg-info
+
