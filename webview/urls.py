@@ -5,6 +5,8 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^$', 'moduleviewer.views.index', name='index'),
+
     # Examples:
     # url(r'^$', 'webview.views.home', name='home'),
     # url(r'^webview/', include('webview.foo.urls')),
