@@ -1,6 +1,6 @@
-{% extends "base.jinja2" %}
+{% extends "moduleviewer/base.html" %}
 {% block head_title %}
-  {{ module_title }} | {{ super() }}
+  {{ module_title }} | {{ block.super }}
 {% endblock %}
 {% block body %}
   <h1 id="module-title">{{ module_title }}</h1>
