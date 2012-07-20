@@ -1,0 +1,17 @@
+{% extends "moduleviewer/base.html" %}
+{% block head_title %}
+  Search results for {{ search_tems|default:'???' }} | {{ block.super }}
+{% endblock %}
+{% block body %}
+  <h1>Search results for {{ search_terms|default:'???' }}</h1>
+  <div id="search-results">
+    <ul>
+    {% for r in records %}
+      <li class="search-record">
+        <a href="{{ r.link }}">{{ r.title }}</a>
+        <div class="search-summary">{{ r.summary|safe }}</div>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,19 +1,47 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
+import urllib
 import urllib2
-from urlparse import urljoin
+from urlparse import urljoin, urlparse
 from BeautifulSoup import BeautifulSoup
+from opensearch import Client as OpenSearchClient
 from django.shortcuts import render_to_response
 
 
 REPO_HOST = 'cnx.org'
 REPO_PORT = 80
+OPENSEARCH_URL = 'http://%s:%s/opensearchdescription' % (REPO_HOST, REPO_PORT)
 SITE_TITLE = "Connexions Web View"
+
+def _fix_url(url):
+    """Fix a URL to put to this webview rather than the repository."""
+    parts = urlparse(url)
+    path = parts.path.split('/')
+    if path[1] != 'content':
+        # We don't know what this is...
+        return url
+    id, version = path[:4][-2:]
+    path = ['', 'content', '%s@%s' % (id, version)]
+    return '/'.join(path)
 
 def index(request):
     return render_to_response('moduleviewer/index.html',
                               {'title': SITE_TITLE})
 
+def search(request):
+    client = OpenSearchClient(OPENSEARCH_URL)
+    terms = urllib.unquote(request.GET.get('q', '')).decode('utf8')
+    results = client.search(terms)
+    records = []
+    for result in results:
+        records.append({'title': result.title,
+                        'link': _fix_url(result.link),
+                        'summary': result.summary_detail['value'],
+                        })
+    return render_to_response('moduleviewer/search.html',
+                              {'title': SITE_TITLE,
+                               'records': records,
+                               'search_terms': request.GET.get('q'),
+                               })
 
 def module(request, id, version='latest'):
     module_id = id
